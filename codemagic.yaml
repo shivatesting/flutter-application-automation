@@ -1,0 +1,16 @@
+workflows:
+  test:
+    name: Test Workflow
+    environment:
+      flutter: stable
+      # Specify the Flutter version if needed
+      # flutter: 3.0.0
+    scripts:
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: Run Flutter Driver tests
+        script: |
+          flutter driver --target=test_driver/e2e.dart --driver=test_driver/e2e_test.dart
+    artifacts:
+      - build/**
