@@ -7,11 +7,7 @@ workflows:
       vars:
         FLUTTER_CHANNEL: stable
         ANDROID_HOME: /opt/android-sdk
-    cache:
-      # Cache flutter and Gradle directories
-      files:
-        - ~/.pub-cache/**
-        - ~/.gradle/**
+   
     scripts:
       - name: Install dependencies
         script: |
