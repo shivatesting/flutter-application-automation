@@ -22,7 +22,7 @@ workflows:
       - name: Run Integration Tests
         script: |
           flutter devices  # List all available devices
-          flutter drive --target=test_driver/e2e.dart -d macos --verbose  # Run tests on macOS (replace 'macos' with correct device if needed)
+          flutter drive --target=test_driver/e2e.dart -d "Android Emulator" --verbose  # Run tests on macOS (replace 'macos' with correct device if needed)
 
       # Step 3: Build the APK
       - name: Build the APK
