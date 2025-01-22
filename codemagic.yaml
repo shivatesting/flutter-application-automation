@@ -17,7 +17,7 @@ workflows:
               
       - name: Run Integration Tests 
         script: |
-          flutter devices  # List available devices
+          flutter devices  # List available devices 
           flutter drive --target=test_driver/e2e.dart -d macos  # Replace with the correct device ID
 
       - name: Build the APK
