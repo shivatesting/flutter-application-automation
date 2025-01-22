@@ -1,16 +1,42 @@
 workflows:
-  test:
-    name: Test Workflow
+  android-build:
+    name: Android Build with Tests
+    max_build_duration: 60 # in minutes
+    instance_type: macos-latest
     environment:
-      flutter: stable
-      # Specify the Flutter version if needed
-      # flutter: 3.0.0
+      vars:
+        FLUTTER_CHANNEL: stable
+        ANDROID_HOME: /opt/android-sdk
+    pre_cache:
+      paths:
+        - ~/.pub-cache
+        - ~/.gradle
+    cache:
+      paths:
+        - ~/.pub-cache
+        - ~/.gradle
     scripts:
       - name: Install dependencies
         script: |
           flutter pub get
-      - name: Run Flutter Driver tests
+          flutter doctor --android-licenses
+          
+      - name: Run Unit Tests
         script: |
-          flutter driver --target=test_driver/e2e.dart --driver=test_driver/e2e_test.dart
+          flutter test
+          
+      - name: Run Integration Tests (Optional)
+        script: |
+          flutter drive --target=test_driver/e2e.dart
+        
+      - name: Build the APK
+        script: |
+          flutter build apk --release
+          
     artifacts:
-      - build/**
+      - build/app/outputs/flutter-apk/app-release.apk
+    publishing:
+      scripts:
+        - name: Upload APK to a server (optional)
+          script: |
+            curl -F "file=@build/app/outputs/flutter-apk/app-release.apk"
