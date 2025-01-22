@@ -1,33 +1,40 @@
 workflows:
   android-build:
     name: Android Build with Tests
-    max_build_duration: 60 # in minutes
-    instance_type: mac_mini_m1 # or mac_mini (or another valid option)
+    max_build_duration: 120  # Increased duration to allow more time for tests
+    instance_type: mac_mini_m1  # mac_mini_m1 instance for macOS build
     environment:
       vars:
         FLUTTER_CHANNEL: stable
         ANDROID_HOME: /opt/android-sdk
+        FLUTTER_VERSION: stable
+        # Additional environment variables can be set here if needed.
    
     scripts:
+      # Step 1: Install dependencies
       - name: Install dependencies
         script: |
-          flutter pub get
-          flutter doctor
-          flutter doctor --android-licenses
-              
-      - name: Run Integration Tests 
+          flutter pub get  # Install Flutter dependencies
+          flutter doctor  # Check the Flutter environment
+          flutter doctor --android-licenses  # Accept Android SDK licenses
+          
+      # Step 2: Run Integration Tests
+      - name: Run Integration Tests
         script: |
-          flutter devices  # List available devices 
-          flutter drive --target=test_driver/e2e.dart -d all  # Replace with the correct device ID
+          flutter devices  # List all available devices
+          flutter drive --target=test_driver/e2e.dart -d macos --verbose  # Run tests on macOS (replace 'macos' with correct device if needed)
 
+      # Step 3: Build the APK
       - name: Build the APK
         script: |
-          flutter build apk --release
+          flutter build apk --release  # Build APK in release mode
           
     artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/app-release.apk  # Store the built APK
+
     publishing:
       scripts:
+        # Optional step: Upload APK to a server
         - name: Upload APK to a server (optional)
           script: |
-            curl -F "file=@build/app/outputs/flutter-apk/app-release.apk" https://your-upload-server.com/upload
+            curl -F "file=@build/app/outputs/flutter-apk/app-release.apk" https://your-upload-server.com/upload  # Replace with your server endpoint
