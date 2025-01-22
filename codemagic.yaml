@@ -15,10 +15,11 @@ workflows:
           flutter doctor
           flutter doctor --android-licenses
               
-      - name: Run Integration Tests (Optional)
+      - name: Run Integration Tests 
         script: |
-          flutter drive --target=test_driver/e2e.dart -d all # Replace with the correct target for your integration tests.
-        
+          flutter devices  # List available devices
+          flutter drive --target=test_driver/e2e.dart -d macos  # Replace with the correct device ID
+
       - name: Build the APK
         script: |
           flutter build apk --release
@@ -29,4 +30,4 @@ workflows:
       scripts:
         - name: Upload APK to a server (optional)
           script: |
-            curl -F "file=@build/app/outputs/flutter-apk/app-release.apk" https://your-upload-server.com
+            curl -F "file=@build/app/outputs/flutter-apk/app-release.apk" https://your-upload-server.com/upload
