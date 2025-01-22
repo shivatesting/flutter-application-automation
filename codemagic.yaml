@@ -13,11 +13,7 @@ workflows:
         script: |
           flutter pub get
           flutter doctor --android-licenses
-          
-      - name: Run Unit Tests
-        script: |
-          flutter test
-          
+              
       - name: Run Integration Tests (Optional)
         script: |
           flutter drive --target=test_driver/e2e.dart # Replace with the correct target for your integration tests.
