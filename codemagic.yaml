@@ -12,11 +12,12 @@ workflows:
       - name: Install dependencies
         script: |
           flutter pub get
+          flutter doctor
           flutter doctor --android-licenses
               
       - name: Run Integration Tests (Optional)
         script: |
-          flutter drive --target=test_driver/e2e.dart # Replace with the correct target for your integration tests.
+          flutter drive --target=test_driver/e2e.dart -d all # Replace with the correct target for your integration tests.
         
       - name: Build the APK
         script: |
